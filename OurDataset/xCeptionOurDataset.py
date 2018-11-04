@@ -7,7 +7,6 @@ import numpy as np
 
 np.random.seed(7)
 
-#vgg16_model = VGG16(weights = 'imagenet', include_top=False)
 base_model = Xception(include_top=True, weights='imagenet', input_tensor=None, input_shape=(299,299,3))
 xception_model = Model(inputs=base_model.input, outputs = base_model.get_layer('avg_pool').output)
 

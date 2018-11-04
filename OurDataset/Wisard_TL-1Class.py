@@ -11,7 +11,7 @@ p_dataset = np.loadtxt("dataSet/MeanPositiveFeatures.txt", delimiter=" ")
 n_dataset = np.loadtxt("dataSet/MeanNegativeFeatures.txt", delimiter=" ")
 
 p_slice_size = int(p_dataset.shape[0]/21)
-n_slice_size = int(n_dataset.shape[0]/15)
+n_slice_size = int(n_dataset.shape[0]/5)
 #------------------------varying RAM Routine------------------------#
 for inp in range(9,15):
     n_inputs_ram = inp
@@ -58,23 +58,27 @@ for inp in range(9,15):
     mean = np_results.mean()
     count=0
     failure = 0
+    fp = 0
+    fn = 0
     for i in np_results:
         if i>mean or i>70:
             count+=1
         else:
+            fn+=1
             failure+=1
     for i in negative_results:
         if i>mean or i>70:
             failure+=1
+            fp+=1
         else:
             count+=1
 
-    print("Hits: ", count, 'Failures: ', failure)
+    print("Hits: ", count, 'FN: ', fn, 'Failures: ', failure, 'FP: ', fp)
     print("Mean: ", mean)
 
     del results, np_results, negative_results
-    result = open('../results/result_thresMean-1Class.dat', 'a')
-    result.write("{0}\t{1}\t{2}\n".format(n_inputs_ram,format((count*100)/84,'.2f'),format((failure*100)/84,'.2f')))
+    result = open('../results/result_thresMean.dat', 'a')
+    result.write("{0}\t{1}\t{2}\n".format(n_inputs_ram,format((count*100)/126,'.2f'),format((failure*100)/126,'.2f'),))
     result.close()
 
 #OBS: Metodologia para teste: crossvalidation pega 3 positivas e 1 negativa
